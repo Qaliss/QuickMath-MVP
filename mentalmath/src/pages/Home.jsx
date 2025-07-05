@@ -1,6 +1,7 @@
 import QuestionCard from "../components/QuestionCard";
 import Score from "../components/Score";
 import { useState } from "react";
+import CountdownTimer from "../components/Timer";
 
 function Home() {
     
@@ -60,20 +61,58 @@ function Home() {
         setTotal(total + 1)
 
         if (userAnswer === questionData.answer) {
+
+            const timeEnd = Date.now()
+            const timeTaken = (timeEnd - timeStart) / 1000
+
+            setTimePerQuestion(prev => [...prev, timeTaken])
             setQuestionData(generateQuestion())
             setScore(score + 1)
+            setTimeStart(Date.now())
         }
 
         e.target.reset()
 
     }
 
+    const handleTimeUp = () => {
+        const timeEnd = Date.now()
+        const timeTaken = (timeEnd - timeStart) / 1000
+
+        setTimePerQuestion(prev => [...prev, timeTaken])
+        setGameOver(true)
+    }
+
     const [questionData, setQuestionData] = useState(generateQuestion())
     const [score, setScore] = useState(0)
     const [total, setTotal] = useState(0)
+    const [gameOver, setGameOver] = useState(false)
+    const [timeStart, setTimeStart] = useState(Date.now())
+    const [timePerQuestion, setTimePerQuestion] = useState([])
+
+    if (gameOver) {
+
+
+
+        const sum = timePerQuestion.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+        const averageTimePerQuestion = (sum / timePerQuestion.length)
+        const roundedTimePerQuestion = averageTimePerQuestion.toFixed(2)
+
+        const accuracy = score / total * 100
+        const roundedAccuracy = accuracy.toFixed(2)
+
+        return <div className='gameover-screen'>
+            <h1>Game Over</h1>
+            <h3>Your Score: {score} / {total}</h3>
+            <h3>Accuracy: {roundedAccuracy}%</h3>
+            <h3>Average time per question: {roundedTimePerQuestion} seconds</h3>
+            <button onClick={() => window.location.reload()}>Play Again</button>
+        </div>
+    }
 
     return (
         <div>
+            <h1>Mental Math</h1>
             <QuestionCard question = {questionData.question}/>
             <div className = 'play'>
                 <form 
@@ -89,6 +128,7 @@ function Home() {
             </div>
 
             <Score score={score} total={total} />
+            <CountdownTimer duration = {10} onComplete = {handleTimeUp}/>
         </div>
 
 

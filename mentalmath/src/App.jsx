@@ -1,15 +1,26 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import QuestionCard from './components/QuestionCard'
-import Home from './pages/Play'
+import Home from './pages/Home.jsx'
+import Login from './auth/Login.jsx'
+import SignUp from './auth/SignUp.jsx'
 
 function App() {
 
+  const [user, setUser] = useState(null)
+  
+  if (!user) {
+    return (
+      <div>
+        <h2>QuickMath</h2>
+        <SignUp />
+        <Login />
+      </div>
+    )
+  }
+
   return (
     <>
-      <h1>Mental Math</h1>
       <Home />
     </>
   )
