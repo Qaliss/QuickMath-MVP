@@ -1,46 +1,38 @@
-import { useState } from 'react'
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home.jsx'
 import Login from './auth/Login.jsx'
 import SignUp from './auth/SignUp.jsx'
 import Play from './pages/play.jsx'
 import Learn from './pages/Learn.jsx'
+import { AuthProvider, ProtectedRoute } from './contexts/AuthContext.jsx'
 
 function App() {
-
-  const [user, setUser] = useState(null)
-  
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            user ? <Home /> : <Navigate to="/login" />
-          }
-        />
-        <Route
-          path="/login"
-          element={<Login setUser={setUser} />}
-        />
-        <Route
-          path="/signup"
-          element={<SignUp setUser={setUser} />}
-        />
-        <Route
-          path="/play"
-          element={<Play />}
-        />
-        <Route
-          path="/learn"
-          element={<Learn />}
-        />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/play" element={
+            <ProtectedRoute>
+              <Play />
+            </ProtectedRoute>
+          } />
+          <Route path="/learn" element={
+            <ProtectedRoute>
+              <Learn />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
-
 }
 
 export default App

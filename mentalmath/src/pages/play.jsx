@@ -1,6 +1,6 @@
 import QuestionCard from "../components/QuestionCard";
 import Score from "../components/Score";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CountdownTimer from "../components/Timer";
 import {auth, db} from "../firebase.js"
 import { doc, collection, addDoc } from "firebase/firestore";
@@ -17,6 +17,14 @@ function Play() {
     const [hasStarted, setHasStarted] = useState(false)
     const [difficulty, setDifficulty] = useState('medium')
     const [duration, setDuration] = useState('60')
+    const [saveResults, setSaveResults] = useState(false)
+
+    useEffect(() => {
+        if (gameOver && !saveResults) {
+            saveResultsToDatabase();
+            setSaveResults(true);
+            }
+        }, [gameOver, saveResults]);
     
     function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -238,7 +246,6 @@ function Play() {
 
     /* Game over page */
     if (gameOver) {
-        saveResultsToDatabase()
         const sum = timePerQuestion.reduce((acc, val) => acc + val, 0);
         const averageTime = (sum / timePerQuestion.length).toFixed(2);
         const accuracy = ((score / total) * 100).toFixed(2);

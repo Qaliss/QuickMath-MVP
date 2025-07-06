@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ function Login ({ setUser }) {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
+            await setPersistence(auth, browserLocalPersistence)
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             setUser(userCredential.user)
             navigate('/')
