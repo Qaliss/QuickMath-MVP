@@ -5,6 +5,8 @@ import './App.css'
 import Home from './pages/Home.jsx'
 import Login from './auth/Login.jsx'
 import SignUp from './auth/SignUp.jsx'
+import Play from './pages/play.jsx'
+import Learn from './pages/Learn.jsx'
 
 function App() {
 
@@ -26,6 +28,14 @@ function App() {
         <Route
           path="/signup"
           element={<SignUp setUser={setUser} />}
+        />
+        <Route
+          path="/play"
+          element={<Play />}
+        />
+        <Route
+          path="/learn"
+          element={<Learn />}
         />
       </Routes>
     </Router>
