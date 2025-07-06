@@ -7,8 +7,10 @@ Current application:
 - Writing each game to a database
 - Three different difficulties (easy, medium, and hard)
 - Three different time presets (30s, 60s, 90s)
+- Auth persistence with refresh
+- Protected Routes
+- Welcome message on home page
 
 Next steps: 
-- Auth persistence with refresh
 - Stats page + Navbar
 - UI design
