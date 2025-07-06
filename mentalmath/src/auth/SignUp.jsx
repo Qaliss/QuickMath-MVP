@@ -20,11 +20,15 @@ function SignUp () {
     }
 
     return (
-        <form onSubmit = {handleLogin}>
-            <input type='email' placeholder = 'E-mail' value={email} onChange={e => setEmail(e.target.value)} required/>
-            <input type='password' placeholder = 'Password' value={password} onChange={e => setPassword(e.target.value)} required/>
-            <button type='submit'>Sign up</button>
-        </form>
+         <div>
+            <h1>MentalMath</h1>
+            <h2>Sign up</h2>
+            <form onSubmit = {handleLogin}>
+                <input type='email' placeholder = 'E-mail' value={email} onChange={e => setEmail(e.target.value)} required/>
+                <input type='password' placeholder = 'Password' value={password} onChange={e => setPassword(e.target.value)} required/>
+                <button type='submit'>Sign up</button>
+            </form>
+        </div>
     )
 
 }

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Login () {
+function Login ({ setUser }) {
+
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -11,6 +15,8 @@ function Login () {
         e.preventDefault()
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
+            setUser(userCredential.user)
+            navigate('/')
 
         }
         catch (err) {
@@ -19,11 +25,16 @@ function Login () {
     }
 
     return (
-        <form onSubmit = {handleLogin}>
-            <input type='email' placeholder = 'E-mail' value={email} onChange={e => setEmail(e.target.value)} required/>
-            <input type='password' placeholder = 'Password' value={password} onChange={e => setPassword(e.target.value)} required/>
-            <button type='submit'>Log in</button>
-        </form>
+        <div>
+            <h1>MentalMath</h1>
+            <h2>Log in</h2>
+            <form onSubmit = {handleLogin}>
+                <input type='email' placeholder = 'E-mail' value={email} onChange={e => setEmail(e.target.value)} required/>
+                <input type='password' placeholder = 'Password' value={password} onChange={e => setPassword(e.target.value)} required/>
+                <button type='submit'>Log in</button>
+                <p>Not a member? <Link to="/signup">Sign Up</Link></p>
+            </form>
+        </div>
     )
 
 }
