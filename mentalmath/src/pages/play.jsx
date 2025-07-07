@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import CountdownTimer from "../components/Timer";
 import {auth, db} from "../firebase.js"
 import { doc, collection, addDoc } from "firebase/firestore";
+import NavBar from "../components/NavBar.jsx";
 
 function Play() {
 
@@ -215,6 +216,7 @@ function Play() {
     if (!hasStarted) {
         return (
             <div className="setup-screen">
+                <NavBar />
                 <h2>Game Setup</h2>
                 <form onSubmit={(e) => {
                     e.preventDefault()
@@ -252,6 +254,7 @@ function Play() {
 
         return (
             <>
+            <NavBar />
             <div className='gameover-screen'>
                 <h1>Game Over</h1>
                 <h3>Your Score: {score} / {total}</h3>
@@ -266,6 +269,7 @@ function Play() {
     /* Main game */
     return (
         <div>
+            <NavBar />
             <h1>Mental Math</h1>
             <QuestionCard question = {questionData.question}/>
             <div className = 'play'>

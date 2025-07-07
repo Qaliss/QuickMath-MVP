@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import NavBar from "../components/NavBar";
 
 function Home() {
 
@@ -34,14 +35,6 @@ function Home() {
         fetchUserProfile()
     }, [])
 
-    const handleSignOut = async () => {
-        try {
-            await signOut(auth)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     if (loading) {
         return(
             <div>Loading...</div>
@@ -51,10 +44,9 @@ function Home() {
     return (
 
         <div>
+            <NavBar />  
             <h1>Welcome, {userProfile?.nickname || 'User'}!</h1>
-            <button><Link to="/play">Play</Link></button>
-            <button><Link to="/Learn">Learn</Link></button>
-            <button onClick={handleSignOut}>Log Out</button>        
+     
         </div>
 
 

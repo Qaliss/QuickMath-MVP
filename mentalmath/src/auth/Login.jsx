@@ -16,12 +16,12 @@ function Login ({ setUser }) {
         try {
             await setPersistence(auth, browserLocalPersistence)
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            setUser(userCredential.user)
             navigate('/')
 
         }
         catch (err) {
             alert('Sign in failed')
+            console.log(err)
         }
     }
 
