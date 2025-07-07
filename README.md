@@ -14,3 +14,13 @@ Current application:
 Next steps: 
 - Stats page + Navbar
 - UI design
+
+
+### 7/7/2025
+-Added Navbar and styled it based off of TWT tutorial. Will need to be changed later
+-Added Stats page as a protected route with Recharts.js library being used for interactive charts of both accuracy and average time per question
+  Includes a dropdown to switch between difficulties smoothly
+
+Next steps:
+- UI design
+- Leaderboards and PVP
