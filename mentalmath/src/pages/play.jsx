@@ -5,6 +5,7 @@ import CountdownTimer from "../components/Timer";
 import {auth, db} from "../firebase.js"
 import { doc, collection, addDoc } from "firebase/firestore";
 import NavBar from "../components/NavBar.jsx";
+import "../css/Play.css"
 
 function Play() {
 
@@ -217,7 +218,7 @@ function Play() {
         return (
             <div className="setup-screen">
                 <NavBar />
-                <h2>Game Setup</h2>
+                <h1 className='setup-title'>Game Setup</h1>
                 <form onSubmit={(e) => {
                     e.preventDefault()
                     setHasStarted(true)
@@ -240,7 +241,7 @@ function Play() {
                             <option value="90">90 seconds</option>
                         </select>
                     </label>
-                    <button type="submit">Start Game</button>
+                    <button className='start-button' type="submit">Start Game</button>
                 </form>
             </div>
         )
@@ -270,7 +271,6 @@ function Play() {
     return (
         <div>
             <NavBar />
-            <h1>Mental Math</h1>
             <QuestionCard question = {questionData.question}/>
             <div className = 'play'>
                 <form 

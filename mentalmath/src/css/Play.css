@@ -1,0 +1,85 @@
+.setup-screen {
+    position: fixed; /* or absolute */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #242424;
+    padding-top: 80px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.setup-title {
+    position: fixed;
+    color: #ffffff;
+    font-weight: bold;
+    top: 120px;
+    left: 0px;
+    right: 0px;
+    padding: 1rem 2rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setup-screen form {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 5rem;
+  border-radius: 8px;
+  min-width: 300px;
+}
+
+/* Style the labels */
+.setup-screen label {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  left: 0;
+  right: 0;
+  gap: 1.5rem;
+  white-space: nowrap;
+  min-height:64px
+}
+
+/* Style the select dropdowns */
+.setup-screen select {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #555;
+  padding: 1rem 1rem;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  min-width: 120px;
+  cursor: pointer;
+  height:64px;
+}
+
+.setup-screen select:hover {
+  border-color: #666;
+}
+/* Style the start button */
+.start-button {
+  background-color: #7f4ae2;
+  color: #ffffff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.start-button:hover {
+  background-color: #4f308a;
+}

@@ -5,7 +5,7 @@ function QuestionCard({question}) {
 
     return (
         <div className = "question-card">
-            <h2>{question}</h2>
+            <h1>{question}</h1>
         </div>
     )
 }

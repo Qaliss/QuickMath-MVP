@@ -7,6 +7,7 @@ import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import NavBar from "../components/NavBar";
+import "../css/Home.css"
 
 function Home() {
 
@@ -45,7 +46,7 @@ function Home() {
 
         <div>
             <NavBar />  
-            <h1>Welcome, {userProfile?.nickname || 'User'}!</h1>
+            <h1 className='welcome-message'>Welcome, {userProfile?.nickname || 'User'}!</h1>
      
         </div>
 

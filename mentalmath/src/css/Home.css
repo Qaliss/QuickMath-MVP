@@ -1,0 +1,9 @@
+.welcome-message {
+  position: fixed;
+  top: 50px;
+  left: 0px;
+  right: 0px;
+  padding: 1rem 2rem;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -21,16 +21,23 @@ function Stats() {
             const snapshot = await getDocs(quizResultsRef)
 
             const rawData = snapshot.docs.map((doc, idx) => {
-                const {average_time_per_question, accuracy, difficulty} = doc.data()
+                const {average_time_per_question, accuracy, difficulty, timestamp} = doc.data()
                 return {
                     quiz: `${idx+1}`,
                     averageTime: average_time_per_question,
                     accuracy: accuracy,
                     difficulty: difficulty,
+                    timestamp: timestamp,
                 }
             })
 
-            setAllQuizData(rawData)
+            const sortedData = rawData.sort((a, b) => a.timestamp - b.timestamp)
+            const finalData = sortedData.map((item, idx) => ({
+                ...item,
+                quiz: `${idx+1}`,
+            }))
+
+            setAllQuizData(finalData)
 
         }
 
