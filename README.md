@@ -24,3 +24,12 @@ Next steps:
 Next steps:
 - UI design
 - Leaderboards and PVP
+
+
+### 7/8/2025
+- Added styling to the home page, sign in pages, navbar, and game setup.
+
+Next steps:
+- Continue styling UI
+- Add in EXP per session logic and track it in the database
+- Leaderboards
