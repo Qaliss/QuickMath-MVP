@@ -44,9 +44,11 @@ function Home() {
     
     return (
 
-        <div>
+        <div className='home'>
             <NavBar />  
-            <h1 className='welcome-message'>Welcome, {userProfile?.nickname || 'User'}!</h1>
+            <div className='welcome-box'>
+                <h1 className='welcome-message'>Hi, {userProfile?.nickname || 'User'}</h1>
+            </div>
      
         </div>
 

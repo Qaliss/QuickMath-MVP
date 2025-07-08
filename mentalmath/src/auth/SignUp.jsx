@@ -3,6 +3,7 @@ import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom"; 
+import "../css/SignUp.css"
 
 function SignUp ({ setUser }) { 
 
@@ -36,16 +37,19 @@ function SignUp ({ setUser }) {
     }
 
     return (
-         <div>
-            <h1>MentalMath</h1>
-            <h2>Sign up</h2>
-            <form onSubmit = {handleSignUp}>
-                <input type='email' placeholder = 'E-mail' value={email} onChange={e => setEmail(e.target.value)} required/>
-                <input type='password' placeholder = 'Password' value={password} onChange={e => setPassword(e.target.value)} required/>
-                <input type='text' placeholder = 'Nickname' value={nickname} onChange={e => setNickname(e.target.value)} required/>
-                <button type='submit'>Sign up</button>
-                <p>Already a member? <Link to="/login">Log In</Link></p>
-            </form>
+         <div className ='signup-screen'>
+            <div className='signup-box'>
+                <h1 className='signup-title'>MentalMath</h1>
+                <h2>Sign up</h2>
+                <form onSubmit = {handleSignUp}>
+                    <input type='email' placeholder = 'E-mail' value={email} onChange={e => setEmail(e.target.value)} required/>
+                    <input type='password' placeholder = 'Password' value={password} onChange={e => setPassword(e.target.value)} required/>
+                    <input type='text' placeholder = 'Nickname' value={nickname} onChange={e => setNickname(e.target.value)} required/>
+                    <button type='submit'>Sign up</button>
+                    <p>Already a member? <Link to="/login">Log In</Link></p>
+                </form>
+            </div>
+
         </div>
     )
 

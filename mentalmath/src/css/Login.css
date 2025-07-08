@@ -1,0 +1,73 @@
+.login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-box {
+    background-color: #2a2a2a;
+    padding: 120px 50px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-title {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0px;
+}
+
+.login-screen input {
+    background-color: #1e1e1e;
+    color: #fff;
+    border: 1px solid #444444;
+    padding: 16px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+    margin-bottom: 15px;
+    text-align: left;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+.login-screen input:focus {
+    border-color: #845ef7;
+}
+
+.login-screen button {
+    background-color: #6a3ebd;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 90%;
+}
+
+.login-screen button:hover {
+    background-color: #4f308a;
+}
