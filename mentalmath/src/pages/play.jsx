@@ -3,7 +3,7 @@ import Score from "../components/Score";
 import { useState, useEffect } from "react";
 import CountdownTimer from "../components/Timer";
 import {auth, db} from "../firebase.js"
-import { doc, collection, addDoc } from "firebase/firestore";
+import { doc, collection, addDoc, average } from "firebase/firestore";
 import NavBar from "../components/NavBar.jsx";
 import "../css/Play.css"
 
@@ -19,6 +19,7 @@ function Play() {
     const [hasStarted, setHasStarted] = useState(false)
     const [difficulty, setDifficulty] = useState('medium')
     const [duration, setDuration] = useState('60')
+    const [gameXP, setGameXP] = useState(0)
     const [saveResults, setSaveResults] = useState(false)
 
     useEffect(() => {
@@ -147,6 +148,25 @@ function Play() {
         }
     }
 
+    function calculateXP ({accuracy, average_time_per_question}) {
+
+        let xp = 50
+
+        if (accuracy === 100) {
+            xp += 10
+        }
+
+        if (accuracy <= 70) {
+            xp -= 10
+        }
+
+        if (accuracy > 70 && average_time_per_question <= 4) {
+            xp += 5
+        }
+
+        setGameXP(xp)
+    }
+
     /* Handlers */
     function handleSubmit(e) {
         e.preventDefault()
@@ -182,6 +202,21 @@ function Play() {
         const sum = timePerQuestion.reduce((acc, val) => acc + val, 0);
         const averageTime = (sum / timePerQuestion.length).toFixed(2);
         const accuracy = ((score / total) * 100).toFixed(2);
+
+        // Calculate XP directly here instead of using state
+        let xp = 50;
+        if (parseFloat(accuracy) === 100) {
+            xp += 10;
+        }
+        if (parseFloat(accuracy) <= 70) {
+            xp -= 10;
+        }
+        if (parseFloat(accuracy) > 70 && parseFloat(averageTime) <= 4) {
+            xp += 5;
+        }
+
+        // Update the state for potential display
+        setGameXP(xp);
             
         try {
             const user = auth.currentUser;
@@ -202,6 +237,7 @@ function Play() {
                 total,
                 accuracy: parseFloat(accuracy),
                 average_time_per_question: parseFloat(averageTime),
+                xp: parseInt(xp),  // Now using the local xp variable
             });
 
             console.log("Document written with ID:", quizRef.id);
