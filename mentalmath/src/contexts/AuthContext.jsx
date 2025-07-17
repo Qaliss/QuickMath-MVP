@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
 
     const value = {
         user,
+        setUser: setUser,
         loading
     }
 

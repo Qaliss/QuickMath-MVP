@@ -4,9 +4,10 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom"; 
 import "../css/SignUp.css"
+import { useAuth } from "../contexts/AuthContext";
 
-function SignUp ({ setUser }) { 
-
+function SignUp () { 
+    const {setUser} = useAuth()
     const navigate = useNavigate() 
 
     const [email, setEmail] = useState('')
@@ -31,9 +32,11 @@ function SignUp ({ setUser }) {
 
         }
         catch (err) {
-            console.error('Sign up failed:', err) 
-            alert('Sign up failed')
+            console.error('Sign up failed:', err.code, err.message);
+            alert(`Sign up failed: ${err.message}`);
         }
+
+        
     }
 
     return (
