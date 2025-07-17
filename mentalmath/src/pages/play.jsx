@@ -11,7 +11,7 @@ import { useXP } from "../contexts/XPContext.jsx";
 function Play() {
 
     /* Pieces of state */
-    const [questionData, setQuestionData] = useState(null)
+    const [questionData, setQuestionData] = useState({ question: '' })
     const [score, setScore] = useState(0)
     const [total, setTotal] = useState(0)
     const [gameOver, setGameOver] = useState(false)
@@ -24,20 +24,30 @@ function Play() {
     const [saveResults, setSaveResults] = useState(false)
 
     const {refreshXP} = useXP()
-
+    /* Save every game */
     useEffect(() => {
         if (gameOver && !saveResults) {
             saveResultsToDatabase();
             setSaveResults(true);
             }
         }, [gameOver, saveResults]);
+
+    /* Generate a question to start */
+    useEffect(() => {
+        if (!questionData || !questionData.question) {
+            setQuestionData(betterQuestionGenerator({difficulty}));
+        }
+    }, [difficulty, questionData, betterQuestionGenerator]);
     
+    /* Helper function to get integers */
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    /* Generate Questions */
+    /*TODO: need to scale problem difficulty better. Some are too hard and some are too easy */
     function betterQuestionGenerator ({ difficulty }) {
 
         const operators = ['+', '-', '*', '÷']
@@ -190,15 +200,23 @@ function Play() {
 
         setTotal(total + 1)
 
+        if (!hasStarted) {
+            setHasStarted(true)
+        }
+
         if (userAnswer === questionData.answer) {
 
             const timeEnd = Date.now()
             const timeTaken = (timeEnd - timeStart) / 1000
-
+            console.log('Correct')
             setTimePerQuestion(prev => [...prev, timeTaken])
             setQuestionData(betterQuestionGenerator({difficulty}))
             setScore(score + 1)
             setTimeStart(Date.now())
+        }
+
+        else {
+            console.log('Incorrect')
         }
 
         e.target.reset()
@@ -220,10 +238,6 @@ function Play() {
 
         let xp = 50;
         switch (difficulty) {
-            case 'easy':
-                console.log('easy bonus')
-                xp += 10;
-                break;
             case 'medium':
                 console.log('medium bonus')
                 xp += 20;
@@ -282,41 +296,6 @@ function Play() {
         }
     };
 
-
-    /* Setup */
-    if (!hasStarted) {
-        return (
-            <div className="setup-screen">
-                <NavBar />
-                <h1 className='setup-title'>Game Setup</h1>
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    setHasStarted(true)
-                    setTimeStart(Date.now()) // Initialize start time
-                    setQuestionData(betterQuestionGenerator({difficulty}))
-                }}>
-                    <label>
-                        Difficulty:
-                        <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
-                    </label>
-                    <label>
-                        Duration:
-                        <select value={duration} onChange={(e) => setDuration(e.target.value)}>
-                            <option value="30">30 seconds</option>
-                            <option value="60">60 seconds</option>
-                            <option value="90">90 seconds</option>
-                        </select>
-                    </label>
-                    <button className='start-button' type="submit">Start Game</button>
-                </form>
-            </div>
-        )
-    }
-
     /* Game over page */
     if (gameOver) {
         const sum = timePerQuestion.reduce((acc, val) => acc + val, 0);
@@ -341,6 +320,87 @@ function Play() {
     return (
         <div>
             <NavBar />
+
+            <div className='setup-ribbon'>
+                <span className='control-label'>Difficulty</span>
+                <div className='difficulty-group'>
+                    <button 
+                            className={`control-btn ${difficulty === 'easy' ? 'active' : ''}`}
+                            onClick={() => {
+                                if (difficulty != 'easy') {
+                                    setDifficulty('easy');
+                                    setQuestionData(betterQuestionGenerator({difficulty: 'easy'}));
+                                    setHasStarted(false);
+                                    setScore(0);
+                                    setTotal(0);
+                                }
+
+                            }}
+                        >
+                            Easy
+                    </button>
+                    <button 
+                            className={`control-btn ${difficulty === 'medium' ? 'active' : ''}`}
+                            onClick={() => {
+                                if (difficulty != 'medium') {
+                                    setDifficulty('medium');
+                                    setQuestionData(betterQuestionGenerator({difficulty: 'medium'}));
+                                    setHasStarted(false);
+                                    setScore(0);
+                                    setTotal(0);
+                                }
+
+                            }}
+                        >
+                            Medium
+                    </button>
+                    <button 
+                            className={`control-btn ${difficulty === 'hard' ? 'active' : ''}`}
+                            onClick={() => {
+                                if (difficulty != 'hard') {
+                                    setDifficulty('hard');
+                                    setQuestionData(betterQuestionGenerator({difficulty: 'hard'}));
+                                    setHasStarted(false);
+                                    setScore(0);
+                                    setTotal(0);
+                                }
+
+                            }}
+                        >
+                            Hard
+                    </button>
+                </div>
+                <span className='control-label'>Duration</span>
+                <div className='timer-group'>
+                    <button 
+                            className={`control-btn ${duration === '30' ? 'active' : ''}`}
+                            onClick={() => {
+                                setDuration('30');
+                                setHasStarted(false);
+                            }}
+                        >
+                            30s
+                    </button>
+                    <button 
+                            className={`control-btn ${duration === '60' ? 'active' : ''}`}
+                            onClick={() => {
+                                setDuration('60');
+                                setHasStarted(false);
+                            }}
+                        >
+                            60s
+                    </button>
+                    <button 
+                            className={`control-btn ${duration === '90' ? 'active' : ''}`}
+                            onClick={() => {
+                                setDuration('90');
+                                setHasStarted(false);
+                            }}
+                        >
+                            90s
+                    </button>
+                </div>
+            </div>
             <QuestionCard question = {questionData.question}/>
             <div className = 'play'>
                 <form 
@@ -353,10 +413,11 @@ function Play() {
                         className = 'answer-input'
                         />
                 </form>
-            </div>
-
+            </div>            
             <Score score={score} total={total} />
-            <CountdownTimer duration = {duration} onComplete = {handleTimeUp}/>
+            {hasStarted && (
+                <CountdownTimer duration={duration} onComplete={handleTimeUp} />
+            )}
         </div>
 
 

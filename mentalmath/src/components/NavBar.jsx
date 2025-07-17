@@ -16,10 +16,10 @@ function NavBar() {
 
     return <nav className = 'navbar'>
         <div className='navbar-brand'>
-            <Link to='/play'>MentalMath</Link>
+            <Link to='/'>MentalMath</Link>
         </div>
         <div className='navbar-links'>
-            <Link to="/play" className='nav-link'>Play</Link>
+            <Link to="/" className='nav-link'>Play</Link>
             <Link to="/learn" className='nav-link'>Learn</Link>
             <div className="nav-profile">
                 <Link to="/stats" className="nav-link">

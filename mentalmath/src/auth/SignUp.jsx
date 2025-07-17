@@ -27,7 +27,7 @@ function SignUp ({ setUser }) {
             })
 
             setUser(user) 
-            navigate('/play') 
+            navigate('/') 
 
         }
         catch (err) {
