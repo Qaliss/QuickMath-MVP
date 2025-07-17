@@ -1,15 +1,18 @@
 import { useState, useEffect, useMemo } from "react";
-import { db } from "../firebase";
-import { average, collection, getDocs } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { average, collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+import { useXP } from "../contexts/XPContext";
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import NavBar from "../components/NavBar";
 
 function Stats() {
     const { user } = useAuth()
+    const { xp, level, xpProgress, xpForNextLevel, currentLevelXP } = useXP();
     const [allQuizData, setAllQuizData] = useState([])
     const [quizData, setQuizData] = useState([])
     const [selectedDifficulty, setSelectedDifficulty] = useState('easy')
+    const [userProfile, setUserProfile] = useState(null)
 
     useEffect(() => {
         async function fetchData() {
@@ -48,6 +51,26 @@ function Stats() {
             setQuizData(allQuizData.filter( q => q.difficulty === selectedDifficulty))       
     }, [selectedDifficulty, allQuizData])
 
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const user = auth.currentUser
+                const uid = user.uid
+                if (user) {
+                    const userDocRef = doc(db, 'users', uid)
+                    const docSnap = await getDoc(userDocRef)
+
+                    if (docSnap.exists())
+                        setUserProfile(docSnap.data())
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        fetchUserProfile()
+    }, [])
+
     const avgTime = quizData.length
     ? (quizData.reduce((sum, q) => sum + q.averageTime, 0) / quizData.length).toFixed(2)
     : null
@@ -60,6 +83,12 @@ function Stats() {
     return (
     <div>
         <NavBar />
+            <div className='welcome-box'>
+                <h1 className='welcome-message'>Hi, {userProfile?.nickname || 'User'}</h1>
+                <h3 className='level'>Level: {level}</h3>
+                <h3 className='progress'>{(xp - currentLevelXP)} / {(xpForNextLevel - currentLevelXP)}</h3>
+                <h3 className="progress-percent">Progress: {xpProgress}%</h3>
+            </div>
         <h2>Performance Overview</h2>
         <div>
             <select value={selectedDifficulty} onChange={(e) => setSelectedDifficulty(e.target.value)}>

@@ -17,7 +17,7 @@ function Login ({ setUser }) {
         try {
             await setPersistence(auth, browserLocalPersistence)
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            navigate('/')
+            navigate('/play')
 
         }
         catch (err) {

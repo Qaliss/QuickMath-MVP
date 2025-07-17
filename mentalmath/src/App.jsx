@@ -1,6 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './App.css'
-import Home from './pages/Home.jsx'
 import Login from './auth/Login.jsx'
 import SignUp from './auth/SignUp.jsx'
 import Play from './pages/play.jsx'
@@ -18,11 +17,6 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
           <Route path="/play" element={
             <ProtectedRoute>
               <Play />
