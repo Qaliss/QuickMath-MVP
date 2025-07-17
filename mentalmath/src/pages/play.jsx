@@ -129,12 +129,14 @@ function Play() {
                 }
 
                 else if (operator === '÷') {
-                    const num1 = getRandomInt(1, 10);
-                    const answer = getRandomInt(1, 100);
+                    const num1 = getRandomInt(1, 100);
+                    const answer = getRandomInt(1, 10);
 
                     const num2 = num1 * answer
 
                     const question = `${num2} ÷ ${num1}`
+
+                    return {question, answer}
                 }
 
                 else {
@@ -217,13 +219,30 @@ function Play() {
         const accuracy = ((score / total) * 100).toFixed(2);
 
         let xp = 50;
+        switch (difficulty) {
+            case 'easy':
+                console.log('easy bonus')
+                xp += 10;
+                break;
+            case 'medium':
+                console.log('medium bonus')
+                xp += 20;
+                break;
+            case 'hard':
+                console.log('hard bonus')
+                xp += 30;
+                break;
+        }
         if (parseFloat(accuracy) === 100) {
+            console.log('accuracy bonus')
             xp += 10;
         }
         if (parseFloat(accuracy) <= 70) {
+            console.log('accuracy penalty')
             xp -= 10;
         }
         if (parseFloat(accuracy) > 70 && parseFloat(averageTime) <= 4) {
+            console.log('speed bonus')
             xp += 5;
         }
 
