@@ -33,3 +33,12 @@ Next steps:
 - Continue styling UI
 - Add in EXP per session logic and track it in the database
 - Leaderboards
+
+### 7/16/2025
+- Created an XP Context to access player level data at any page. Added in cumulative XP logic, able to calculate level and progress through helper functions.
+- Minor UI tweaks with NavBar
+
+Next Steps:
+- Change the UX. Need the home page to be the play page, and for the setup to be a dynamic element. When the user starts typing, then the countdown starts.
+- Continue styling UI
+- Leaderboards
