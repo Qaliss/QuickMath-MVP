@@ -8,10 +8,12 @@ import Learn from './pages/Learn.jsx'
 import Stats from './pages/stats.jsx'
 import NavBar from './components/NavBar.jsx'
 import { AuthProvider, ProtectedRoute } from './contexts/AuthContext.jsx'
+import { XPProvider } from './contexts/XPContext.jsx'
 
 function App() {
   return (
     <AuthProvider>
+      <XPProvider>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -38,6 +40,7 @@ function App() {
           } />
         </Routes>
       </Router>
+      </XPProvider>
     </AuthProvider>
   )
 }

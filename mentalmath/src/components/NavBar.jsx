@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "../css/NavBar.css"
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
+import profilePic from '../assets/vector-flat-illustration-grayscale-avatar-600nw-2281862025.webp';
 
 function NavBar() {
 
@@ -21,8 +22,12 @@ function NavBar() {
             <Link to="/" className='nav-link'>Home</Link>
             <Link to="/play" className='nav-link'>Play</Link>
             <Link to="/learn" className='nav-link'>Learn</Link>
-            <Link to="/stats" className='nav-link'>Stats</Link>
-            <button onClick={handleSignOut}>Log Out</button> 
+            <div className="nav-profile">
+                <Link to="/stats" className="nav-link">
+                <img className='profile-pic' src={profilePic} alt="Profile" />
+                </Link>
+                <button onClick={handleSignOut} className="nav-button">Log Out</button>
+            </div>
         </div>
     </nav>
 }

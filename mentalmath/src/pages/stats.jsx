@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { db } from "../firebase";
 import { average, collection, getDocs } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
@@ -9,7 +9,7 @@ function Stats() {
     const { user } = useAuth()
     const [allQuizData, setAllQuizData] = useState([])
     const [quizData, setQuizData] = useState([])
-    const [selectedDifficulty, setSelectedDifficulty] = useState('all')
+    const [selectedDifficulty, setSelectedDifficulty] = useState('easy')
 
     useEffect(() => {
         async function fetchData() {
@@ -45,14 +45,7 @@ function Stats() {
     }, [user])
 
     useEffect(() => {
-        if (selectedDifficulty === 'all') {
-            setQuizData(allQuizData)
-        }
-
-        else {
-            setQuizData(allQuizData.filter( q => q.difficulty === selectedDifficulty))
-        }
-            
+            setQuizData(allQuizData.filter( q => q.difficulty === selectedDifficulty))       
     }, [selectedDifficulty, allQuizData])
 
     const avgTime = quizData.length
@@ -63,13 +56,13 @@ function Stats() {
     ? (quizData.reduce((sum, q) => sum + q.accuracy, 0) / quizData.length).toFixed(2)
     : null
 
+
     return (
     <div>
         <NavBar />
         <h2>Performance Overview</h2>
         <div>
             <select value={selectedDifficulty} onChange={(e) => setSelectedDifficulty(e.target.value)}>
-                <option value='all'>All</option>
                 <option value='easy'>Easy</option>
                 <option value='medium'>Medium</option>
                 <option value='hard'>Hard</option>
@@ -83,50 +76,50 @@ function Stats() {
         </div>
         )}
 
-        <div style={{ display: 'flex', gap: '100px' }}>
-        <div style={{ flex: 1 }}>
-            <ResponsiveContainer width={500} height={600}>
-            <LineChart
-                data={quizData}
-                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-            >
-                <YAxis domain={[0, 'auto']} />
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="quiz" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                type="monotone"
-                dataKey="averageTime"
-                name="Avg Time (sec)"
-                stroke="#8884d8"
-                />
-            </LineChart>
-            </ResponsiveContainer>
-        </div>
+        <div style={{ display: 'flex', gap: '50px' }} className='graph-box'>
+            <div style={{ flex: 1, width: '100%', maxWidth: '1000px', minWidth: '600px' }} className='time-graph'>
+                <ResponsiveContainer width= '100%' aspect={1.778}>
+                    <LineChart
+                        data={quizData}
+                        margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                    >
+                        <YAxis domain={[0, 'auto']} />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="quiz" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                        type="monotone"
+                        dataKey="averageTime"
+                        name="Avg Time (sec)"
+                        stroke="#8884d8"
+                        />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
 
-        <div style={{ flex: 1 }}>
-            <ResponsiveContainer width={500} height={600}>
-            <LineChart
-                data={quizData}
-                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-            >
-                <YAxis domain={[0, 'auto']} />
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="quiz" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                type="monotone"
-                dataKey="accuracy"
-                name="Accuracy (%)"
-                stroke="#82ca9d"
-                />
-            </LineChart>
-            </ResponsiveContainer>
-        </div>
+            <div style={{ flex: 1, width: '100%', maxWidth: '1000px', minWidth: '600px' }} className='accuracy-graph'>
+                <ResponsiveContainer width= '100%' aspect={1.778}>
+                    <LineChart
+                        data={quizData}
+                        margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                    >
+                        <YAxis domain={[0, 'auto']} />
+                        <CartesianGrid strokeDasharray="3" />
+                        <XAxis dataKey="quiz" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                        type="monotone"
+                        dataKey="accuracy"
+                        name="Accuracy (%)"
+                        stroke="#82ca9d"
+                        />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     </div>
     )

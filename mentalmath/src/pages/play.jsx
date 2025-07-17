@@ -6,6 +6,7 @@ import {auth, db} from "../firebase.js"
 import { doc, collection, addDoc, average } from "firebase/firestore";
 import NavBar from "../components/NavBar.jsx";
 import "../css/Play.css"
+import { useXP } from "../contexts/XPContext.jsx";
 
 function Play() {
 
@@ -17,10 +18,12 @@ function Play() {
     const [timeStart, setTimeStart] = useState(Date.now())
     const [timePerQuestion, setTimePerQuestion] = useState([])
     const [hasStarted, setHasStarted] = useState(false)
-    const [difficulty, setDifficulty] = useState('medium')
-    const [duration, setDuration] = useState('60')
+    const [difficulty, setDifficulty] = useState('easy')
+    const [duration, setDuration] = useState('30')
     const [gameXP, setGameXP] = useState(0)
     const [saveResults, setSaveResults] = useState(false)
+
+    const {refreshXP} = useXP()
 
     useEffect(() => {
         if (gameOver && !saveResults) {
@@ -37,8 +40,8 @@ function Play() {
 
     function betterQuestionGenerator ({ difficulty }) {
 
-        const operators = ['+', '-', '*']
-        const operator = operators[Math.floor(Math.random() * operators.length)]
+        const operators = ['+', '-', '*', '÷']
+        let operator = operators[Math.floor(Math.random() * operators.length)]
 
         switch (difficulty) {
             case 'easy':
@@ -65,7 +68,7 @@ function Play() {
                     return {question, answer}
                 }
 
-                else {
+                else if (operator ==='*') {
                     const num1 = getRandomInt(1, 10);
                     const num2 = getRandomInt(1, 10);
 
@@ -75,9 +78,23 @@ function Play() {
                     
                     return {question, answer}
                 }
+
+                else {
+                    const num1 = getRandomInt(1, 10);
+                    const answer = getRandomInt(1, 10);
+
+                    const num2 = num1 * answer
+
+                    const question = `${num2} ÷ ${num1}`
+
+                    return {question, answer}
+                }
             
             case 'medium':
-                
+
+                operators.push('^')
+                operator = operators[Math.floor(Math.random() * operators.length)]
+
                 if (operator === '+') {
                     const num1 = getRandomInt(1, 1000);
                     const num2 = getRandomInt(1, 1000);
@@ -100,7 +117,7 @@ function Play() {
                     return {question, answer}
                 }
 
-                else {
+                else if (operator === '*') {
                     const num1 = getRandomInt(1, 100);
                     const num2 = getRandomInt(1, 10);
 
@@ -110,32 +127,35 @@ function Play() {
                     
                     return {question, answer}
                 }
-            
-            case 'hard':
-                
-                if (operator === '+') {
-                    const num1 = getRandomInt(1, 10000);
-                    const num2 = getRandomInt(1, 10000);
 
-                    const answer = num1 + num2
+                else if (operator === '÷') {
+                    const num1 = getRandomInt(1, 10);
+                    const answer = getRandomInt(1, 100);
 
-                    const question =  `${num1} + ${num2}`
+                    const num2 = num1 * answer
 
-                    return {question, answer}
-                }
-
-                else if (operator === '-') {
-                    const num1 = getRandomInt(1, 10000);
-                    const num2 = getRandomInt(1, 10000);
-
-                    const answer = num1 - num2
-
-                    const question = `${num1} - ${num2}`
-
-                    return {question, answer}
+                    const question = `${num2} ÷ ${num1}`
                 }
 
                 else {
+                    const num1 = getRandomInt(1, 20)
+                    const num2 = getRandomInt(1, 2)
+
+                    const answer = Math.pow(num1, num2)
+
+                    const question = `${num1} ^ ${num2}`
+
+                    return {question, answer}
+                }
+
+            
+            case 'hard':
+
+                operators.shift()
+                operators.shift()
+                operator = operators[Math.floor(Math.random() * operators.length)]
+                
+                if (operator === '*') {
                     const num1 = getRandomInt(1, 100);
                     const num2 = getRandomInt(1, 100);
 
@@ -145,27 +165,20 @@ function Play() {
                     
                     return {question, answer}
                 }
+
+                else if (operator === '÷') {
+                    const num1 = getRandomInt(1, 100);
+                    const answer = getRandomInt(1, 100);
+
+                    const num2 = num1 * answer
+
+                    const question = `${num2} ÷ ${num1}`
+
+                    return {question, answer}
+                }
         }
     }
 
-    function calculateXP ({accuracy, average_time_per_question}) {
-
-        let xp = 50
-
-        if (accuracy === 100) {
-            xp += 10
-        }
-
-        if (accuracy <= 70) {
-            xp -= 10
-        }
-
-        if (accuracy > 70 && average_time_per_question <= 4) {
-            xp += 5
-        }
-
-        setGameXP(xp)
-    }
 
     /* Handlers */
     function handleSubmit(e) {
@@ -203,7 +216,6 @@ function Play() {
         const averageTime = (sum / timePerQuestion.length).toFixed(2);
         const accuracy = ((score / total) * 100).toFixed(2);
 
-        // Calculate XP directly here instead of using state
         let xp = 50;
         if (parseFloat(accuracy) === 100) {
             xp += 10;
@@ -237,10 +249,13 @@ function Play() {
                 total,
                 accuracy: parseFloat(accuracy),
                 average_time_per_question: parseFloat(averageTime),
-                xp: parseInt(xp),  // Now using the local xp variable
+                xp: parseInt(xp),
             });
 
             console.log("Document written with ID:", quizRef.id);
+            console.log(`XP: ${xp}`)
+
+            await refreshXP()
 
         } catch (e) {
             console.error("Error adding document:", e.message || e);

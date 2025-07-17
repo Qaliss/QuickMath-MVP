@@ -1,14 +1,12 @@
 .navbar {
   position: fixed;
   top: 0px;
-  left: 0px;
-  right: 0px;
-  background-color: #000000;
+  left: 5%;
+  right: 5%;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
@@ -32,7 +30,7 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 768ox) {
+@media (max-width: 768px) {
   .navbar {
     padding: 1rem;
     width: 100%;
@@ -49,4 +47,17 @@
   .nav-link {
     padding: 0.5rem;
   }
+}
+
+.profile-pic {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

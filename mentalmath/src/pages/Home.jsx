@@ -8,11 +8,16 @@ import { signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import NavBar from "../components/NavBar";
 import "../css/Home.css"
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
+import { useXP } from "../contexts/XPContext";
+
 
 function Home() {
 
     const [userProfile, setUserProfile] = useState(null)
     const [loading, setLoading] = useState(true)
+
+    const { xp, level, xpProgress, xpForNextLevel, currentLevelXP } = useXP();
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -48,6 +53,9 @@ function Home() {
             <NavBar />  
             <div className='welcome-box'>
                 <h1 className='welcome-message'>Hi, {userProfile?.nickname || 'User'}</h1>
+                <h3 className='level'>Level: {level}</h3>
+                <h3 className='progress'>{(xp - currentLevelXP)} / {(xpForNextLevel - currentLevelXP)}</h3>
+                <h3 className="progress-percent">Progress: {xpProgress}%</h3>
             </div>
      
         </div>
