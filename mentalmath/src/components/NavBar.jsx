@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../css/NavBar.css"
+import "../css/Navbar.css"
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import profilePic from '../assets/vector-flat-illustration-grayscale-avatar-600nw-2281862025.webp';
