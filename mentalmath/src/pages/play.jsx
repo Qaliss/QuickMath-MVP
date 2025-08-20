@@ -47,10 +47,9 @@ function Play() {
     }
 
     /* Generate Questions */
-    /*TODO: need to scale problem difficulty better. Some are too hard and some are too easy */
     function betterQuestionGenerator ({ difficulty }) {
 
-        const operators = ['+', '-', '*', '÷']
+        const operators = ['+', '-', '*']
         let operator = operators[Math.floor(Math.random() * operators.length)]
 
         switch (difficulty) {
@@ -58,7 +57,7 @@ function Play() {
                 
                 if (operator === '+') {
                     const num1 = getRandomInt(1, 100);
-                    const num2 = getRandomInt(1, 100);
+                    const num2 = getRandomInt(1, 10);
 
                     const answer = num1 + num2
 
@@ -69,7 +68,7 @@ function Play() {
 
                 else if (operator === '-') {
                     const num1 = getRandomInt(1, 100);
-                    const num2 = getRandomInt(1, 100);
+                    const num2 = getRandomInt(1, 10);
 
                     const answer = num1 - num2
 
@@ -88,26 +87,15 @@ function Play() {
                     
                     return {question, answer}
                 }
-
-                else {
-                    const num1 = getRandomInt(1, 10);
-                    const answer = getRandomInt(1, 10);
-
-                    const num2 = num1 * answer
-
-                    const question = `${num2} ÷ ${num1}`
-
-                    return {question, answer}
-                }
             
             case 'medium':
 
-                operators.push('^')
+                operators.push('÷', '^')
                 operator = operators[Math.floor(Math.random() * operators.length)]
 
                 if (operator === '+') {
-                    const num1 = getRandomInt(1, 1000);
-                    const num2 = getRandomInt(1, 1000);
+                    const num1 = getRandomInt(1, 100);
+                    const num2 = getRandomInt(1, 100);
 
                     const answer = num1 + num2
 
@@ -117,8 +105,8 @@ function Play() {
                 }
 
                 else if (operator === '-') {
-                    const num1 = getRandomInt(1, 1000);
-                    const num2 = getRandomInt(1, 1000);
+                    const num1 = getRandomInt(1, 100);
+                    const num2 = getRandomInt(1, 100);
 
                     const answer = num1 - num2
 
@@ -128,7 +116,7 @@ function Play() {
                 }
 
                 else if (operator === '*') {
-                    const num1 = getRandomInt(1, 100);
+                    const num1 = getRandomInt(10, 100);
                     const num2 = getRandomInt(1, 10);
 
                     const answer = num1 * num2
@@ -150,7 +138,7 @@ function Play() {
                 }
 
                 else {
-                    const num1 = getRandomInt(1, 20)
+                    const num1 = getRandomInt(1, 10)
                     const num2 = getRandomInt(1, 2)
 
                     const answer = Math.pow(num1, num2)
@@ -179,12 +167,23 @@ function Play() {
                 }
 
                 else if (operator === '÷') {
-                    const num1 = getRandomInt(1, 100);
-                    const answer = getRandomInt(1, 100);
+                    const num1 = getRandomInt(1, 1000);
+                    const answer = getRandomInt(1, 10);
 
                     const num2 = num1 * answer
 
                     const question = `${num2} ÷ ${num1}`
+
+                    return {question, answer}
+                }
+
+                else {
+                    const num1 = getRandomInt(1, 20)
+                    const num2 = getRandomInt(1, 3)
+
+                    const answer = Math.pow(num1, num2)
+
+                    const question = `${num1} ^ ${num2}`
 
                     return {question, answer}
                 }
@@ -333,6 +332,8 @@ function Play() {
                                     setHasStarted(false);
                                     setScore(0);
                                     setTotal(0);
+                                    setTimeStart(Date.now());
+                                    setTimePerQuestion([]);
                                 }
 
                             }}
@@ -348,6 +349,8 @@ function Play() {
                                     setHasStarted(false);
                                     setScore(0);
                                     setTotal(0);
+                                    setTimeStart(Date.now());
+                                    setTimePerQuestion([]);
                                 }
 
                             }}
@@ -363,6 +366,8 @@ function Play() {
                                     setHasStarted(false);
                                     setScore(0);
                                     setTotal(0);
+                                    setTimeStart(Date.now());
+                                    setTimePerQuestion([]);
                                 }
 
                             }}

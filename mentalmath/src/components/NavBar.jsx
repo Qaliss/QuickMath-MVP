@@ -3,8 +3,11 @@ import "../css/NavBar.css"
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import profilePic from '../assets/vector-flat-illustration-grayscale-avatar-600nw-2281862025.webp';
+import { useXP } from "../contexts/XPContext";
 
 function NavBar() {
+
+    const { xp, level, xpProgress, xpForNextLevel, currentLevelXP } = useXP();
 
     const handleSignOut = async () => {
         try {
@@ -24,6 +27,8 @@ function NavBar() {
             <div className="nav-profile">
                 <Link to="/stats" className="nav-link">
                 <img className='profile-pic' src={profilePic} alt="Profile" />
+                <p>{level}</p>
+                <progress value={currentLevelXP} max={xpForNextLevel}></progress>
                 </Link>
                 <button onClick={handleSignOut} className="nav-button">Log Out</button>
             </div>

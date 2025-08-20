@@ -3,7 +3,7 @@ import './App.css'
 import Login from './auth/Login.jsx'
 import SignUp from './auth/SignUp.jsx'
 import Play from './pages/play.jsx'
-import Learn from './pages/Learn.jsx'
+import Learn from './pages/learn.jsx'
 import Stats from './pages/stats.jsx'
 import NavBar from './components/NavBar.jsx'
 import { AuthProvider, ProtectedRoute } from './contexts/AuthContext.jsx'
@@ -17,11 +17,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Play />
-            </ProtectedRoute>
-          } />
+          <Route path="/" element={<Play />} />
           <Route path="/learn" element={
             <ProtectedRoute>
               <Learn />
