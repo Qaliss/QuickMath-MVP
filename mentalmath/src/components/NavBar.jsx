@@ -1,0 +1,39 @@
+import { Link } from "react-router-dom";
+import "../css/Navbar.css"
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import profilePic from '../assets/vector-flat-illustration-grayscale-avatar-600nw-2281862025.webp';
+import { useXP } from "../contexts/XPContext";
+
+function NavBar() {
+
+    const { xp, level, xpProgress, xpForNextLevel, currentLevelXP } = useXP();
+
+    const handleSignOut = async () => {
+        try {
+            await signOut(auth)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return <nav className = 'navbar'>
+        <div className='navbar-brand'>
+            <Link to='/'>MentalMath</Link>
+        </div>
+        <div className='navbar-links'>
+            <Link to="/" className='nav-link'>Play</Link>
+            <Link to="/learn" className='nav-link'>Learn</Link>
+            <div className="nav-profile">
+                <Link to="/stats" className="nav-link">
+                <img className='profile-pic' src={profilePic} alt="Profile" />
+                <p>{level}</p>
+                <progress value={currentLevelXP} max={xpForNextLevel}></progress>
+                </Link>
+                <button onClick={handleSignOut} className="nav-button">Log Out</button>
+            </div>
+        </div>
+    </nav>
+}
+
+export default NavBar
